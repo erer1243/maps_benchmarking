@@ -20,8 +20,8 @@ func getRandomInt(range: Int) -> Int {
 
 class BaseBenchmark {
 	var startTimeMillis: Int64 = 0,
-	    endTimeMillis: Int64 = 0
-    var allResults: [Int] = []
+	    endTimeMillis: Int64 = 0,
+	    allResults: [Int] = []
 
 	var elapsedMillis: Int {
 		return Int(endTimeMillis - startTimeMillis)
@@ -33,9 +33,9 @@ class BaseBenchmark {
 
 	func stopTimer() {
 		endTimeMillis = getCurrentMillis()
-        allResults.append(elapsedMillis)
+		allResults.append(elapsedMillis)
 	}
-    
+
     func getAverageMillis() -> Int {
         return allResults.reduce(0) {acc, i in acc + i} / allResults.count
     }
