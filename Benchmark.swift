@@ -21,6 +21,7 @@ func getRandomInt(range: Int) -> Int {
 class BaseBenchmark {
 	var startTimeMillis: Int64 = 0,
 	    endTimeMillis: Int64 = 0
+    var allResults: [Int] = []
 
 	var elapsedMillis: Int {
 		return Int(endTimeMillis - startTimeMillis)
@@ -32,14 +33,19 @@ class BaseBenchmark {
 
 	func stopTimer() {
 		endTimeMillis = getCurrentMillis()
+        allResults.append(elapsedMillis)
 	}
+    
+    func getAverageMillis() -> Int {
+        return allResults.reduce(0) {acc, i in acc + i} / allResults.count
+    }
 
 	/* virtual */ func doTest() {}
 	/* virtual */ func printResults() {}
 }
 
 class LinearBenchmark : BaseBenchmark {
-	func doTest() {
+	override func doTest() {
 
 	}
 }
