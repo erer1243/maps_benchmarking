@@ -12,6 +12,12 @@ func getRandomInt(range: Int) -> Int {
 	#endif
 }
 
+/*
+  Ideas:
+    * run many tests and take average
+    * different test for each map depending on proper use case
+*/
+
 class BaseBenchmark {
 	var startTimeMillis: Int64 = 0,
 	    endTimeMillis: Int64 = 0
@@ -27,4 +33,19 @@ class BaseBenchmark {
 	func stopTimer() {
 		endTimeMillis = getCurrentMillis()
 	}
+
+	/* virtual */ func doTest() {}
+	/* virtual */ func printResults() {}
+}
+
+class LinearBenchmark : BaseBenchmark {
+
+}
+
+class BinaryBenchmark : BaseBenchmark {
+
+}
+
+class HashBenchmark : BaseBenchmark {
+
 }
