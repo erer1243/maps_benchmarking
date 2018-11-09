@@ -39,7 +39,9 @@ class BaseBenchmark {
 }
 
 class LinearBenchmark : BaseBenchmark {
+	func doTest() {
 
+	}
 }
 
 class BinaryBenchmark : BaseBenchmark {
