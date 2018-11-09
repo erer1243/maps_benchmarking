@@ -11,6 +11,15 @@ func getRandomInt(range: Int) -> Int {
 		return Int(rand()) % range
 	#endif
 }
+func getRandomString(size: Int) -> String {
+	let chars = Array("abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.")
+	var result = ""
+	for _ in 0..<size {
+		let char = chars[getRandomInt(range: chars.count)]
+		result += String(char)
+	}
+	return result
+}
 
 /*
   Ideas:
@@ -22,9 +31,18 @@ class BaseBenchmark {
 	var startTimeMillis: Int64 = 0,
 	    endTimeMillis: Int64 = 0,
 	    allResults: [Int] = []
+	
+	let testSize = 1000
+	var keys: [String]
 
 	var elapsedMillis: Int {
 		return Int(endTimeMillis - startTimeMillis)
+	}
+	
+	init() {
+		// Create keys at init to not affect test time
+		keys = []
+		for _ in 0..<testSize {keys.append(getRandomString(size: 10))}
 	}
 
 	func startTimer() {
@@ -46,7 +64,11 @@ class BaseBenchmark {
 
 class LinearBenchmark : BaseBenchmark {
 	override func doTest() {
-
+		var linearMap = LinearMap<String, Int>()
+		
+		for key in keys {
+			linearMap[key] = getRandomInt(range: 1000)
+		}
 	}
 }
 
