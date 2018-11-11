@@ -4,7 +4,7 @@ EXEC := benchmark
 
 build: .build/debug/$(EXEC)
 
-.build/debug/$(EXEC): main.swift BinaryMap.swift binarySearch.swift HashMap.swift LinearMap.swift Benchmark.swift
+.build/debug/$(EXEC): main.swift BinaryMap.swift binarySearch.swift HashMap.swift LinearMap.swift Benchmark.swift BaseBenchmark.swift
 	$(SWIFT) $(SWIFTFLAGS)
 
 test: build
