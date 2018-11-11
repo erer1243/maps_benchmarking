@@ -12,7 +12,7 @@ func getRandomInt(range: Int) -> Int {
 	#endif
 }
 func getRandomString(size: Int) -> String {
-	let chars = Array("abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.")
+	let chars = Array("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890")
 	var result = ""
 	for _ in 0..<size {
 		let char = chars[getRandomInt(range: chars.count)]
@@ -21,26 +21,30 @@ func getRandomString(size: Int) -> String {
 	return result
 }
 
+func getRandomStringArray(size: Int, stringSize: Int) -> [String] {
+	return [String](repeating: "", count: size)
+		.map{ _ in getRandomString(size: stringSize) }
+}
+
 class BaseBenchmark {
 	var startTimeMillis: Int64 = 0,
 	    endTimeMillis: Int64 = 0,
 	    allResults: [Int] = []
 
-	let testSize = 1000
-	var keys: [String]
-
-	var elapsedMillis: Int {
-		return Int(endTimeMillis - startTimeMillis)
-	}
-
 	var averageMillis: Double {
 		return Double(allResults.reduce(0, {$0 + $1})) / Double(allResults.count)
 	}
 
-	init() {
-		// Create keys at init to not affect test time
-		keys = []
-		for _ in 0..<testSize {keys.append(getRandomString(size: 10))}
+	var testCount: Int {
+		return allResults.count
+	}
+
+	var resultString: String {
+		return """
+		Test results:
+			Number of tests run:   \(testCount)
+			Average time (millis): \(averageMillis)
+		"""
 	}
 
 	func startTimer() {
@@ -49,9 +53,9 @@ class BaseBenchmark {
 
 	func stopTimer() {
 		endTimeMillis = getCurrentMillis()
-		allResults.append(elapsedMillis)
+		allResults.append(Int(endTimeMillis - startTimeMillis))
 	}
 
-	/* virtual */ func doTest() {}
-	/* virtual */ func printResults() {}
+	/* virtual */ func runTests(count: Int) {}
+	/* virtual */ func runSingleTest(data: [String]) {}
 }
