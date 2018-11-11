@@ -56,6 +56,11 @@ class BaseBenchmark {
 		allResults.append(Int(endTimeMillis - startTimeMillis))
 	}
 
-	/* virtual */ func runTests(count: Int) {}
+	func runTests(count: Int) {
+		for _ in 0..<count {
+			runSingleTest()
+		}
+	}
+
 	/* virtual */ func runSingleTest() {}
 }
