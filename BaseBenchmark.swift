@@ -60,6 +60,8 @@ class BaseBenchmark {
 		for _ in 0..<count {
 			runSingleTest()
 		}
+
+		print(resultString)
 	}
 
 	// It's up to runSingleTest to manage the timer, generate test data, etc.
