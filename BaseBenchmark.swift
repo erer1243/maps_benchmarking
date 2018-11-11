@@ -57,5 +57,5 @@ class BaseBenchmark {
 	}
 
 	/* virtual */ func runTests(count: Int) {}
-	/* virtual */ func runSingleTest(data: [String]) {}
+	/* virtual */ func runSingleTest() {}
 }
