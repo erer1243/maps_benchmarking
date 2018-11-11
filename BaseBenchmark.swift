@@ -62,5 +62,6 @@ class BaseBenchmark {
 		}
 	}
 
+	// It's up to runSingleTest to manage the timer, generate test data, etc.
 	/* virtual */ func runSingleTest() {}
 }
