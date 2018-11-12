@@ -39,21 +39,26 @@ class BaseBenchmark {
 		return Int(endTimeMillis - startTimeMillis)
 	}
 
-	var averageGetMillis: Double {
+	var averageGetTestMillis: Double {
 		return Double(getResults.reduce(0, +)) / Double(getResults.count)
 	}
 
-	var averageSetMillis: Double {
+	var averageSetTestMillis: Double {
 		return Double(setResults.reduce(0, +)) / Double(setResults.count)
+	}
+
+	var numberTests: Int {
+		return getResults.count
 	}
 
 	var resultString: String {
 		return """
 		\(benchmarkName) test results:
-			Number tests run: \(getResults.count)
+			Number tests run: \(numberTests)
+			Number operations performed: \(numberTests * operationsPerTest)
 			Average times (per operation):
-				get: \(1000 * averageGetMillis / Double(operationsPerTest)) µs
-				set: \(1000 * averageSetMillis / Double(operationsPerTest)) µs
+				get: \(1000 * averageGetTestMillis / Double(operationsPerTest)) µs
+				set: \(1000 * averageSetTestMillis / Double(operationsPerTest)) µs
 		"""
 	}
 
