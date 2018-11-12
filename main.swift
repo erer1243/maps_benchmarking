@@ -5,4 +5,4 @@ import Foundation
 #endif
 
 var lb = LinearBenchmark()
-lb.runTests(count: 1)
+lb.runTests(count: 10)
