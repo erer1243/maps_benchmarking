@@ -27,24 +27,39 @@ func getRandomStringArray(size: Int, stringSize: Int) -> [String] {
 }
 
 class BaseBenchmark {
+	let benchmarkName: String,
+	    operationsPerTest: Int
+
 	var startTimeMillis: Int64 = 0,
 	    endTimeMillis: Int64 = 0,
-	    allResults: [Int] = []
+	    getResults: [Int] = [],
+	    setResults: [Int] = []
 
-	var averageMillis: Double {
-		return Double(allResults.reduce(0, {$0 + $1})) / Double(allResults.count)
+	var elapsedMillis: Int {
+		return Int(endTimeMillis - startTimeMillis)
 	}
 
-	var testCount: Int {
-		return allResults.count
+	var averageGetMillis: Double {
+		return Double(getResults.reduce(0, +)) / Double(getResults.count)
+	}
+
+	var averageSetMillis: Double {
+		return Double(setResults.reduce(0, +)) / Double(setResults.count)
 	}
 
 	var resultString: String {
 		return """
-		Test results:
-			Number of tests run:   \(testCount)
-			Average time (millis): \(averageMillis)
+		\(benchmarkName) test results:
+			Number tests run: \(getResults.count)
+			Average times (per operation):
+				get: \(1000 * averageGetMillis / Double(operationsPerTest)) µs
+				set: \(1000 * averageSetMillis / Double(operationsPerTest)) µs
 		"""
+	}
+
+	init(benchmarkName: String, operationsPerTest: Int) {
+		self.benchmarkName = benchmarkName
+		self.operationsPerTest = operationsPerTest
 	}
 
 	func startTimer() {
@@ -53,7 +68,14 @@ class BaseBenchmark {
 
 	func stopTimer() {
 		endTimeMillis = getCurrentMillis()
-		allResults.append(Int(endTimeMillis - startTimeMillis))
+	}
+
+	func recordSet() {
+		setResults.append(elapsedMillis)
+	}
+
+	func recordGet() {
+		getResults.append(elapsedMillis)
 	}
 
 	func runTests(count: Int) {
@@ -64,6 +86,7 @@ class BaseBenchmark {
 		print(resultString)
 	}
 
-	// It's up to runSingleTest to manage the timer, generate test data, etc.
+	/* It's up to runSingleTest to manage the timer, generate test data,
+	enter results, etc. */
 	/* virtual */ func runSingleTest() {}
 }
