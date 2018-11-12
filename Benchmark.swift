@@ -1,29 +1,5 @@
 import Foundation
 
-/*
-linear test pseudo code
-map = new linearmap()
-test sets:
-	startTimer
-	for x in randomdata {
-		map[x] = x
-	}
-	stopTimer
-	append data to setResults
-
-test gets:
-	startTimer
-	for _ in randomdata {
-
-	}
-	stopTimer
-	append data to getResults
-*/
-
-/*
-	getResults = how long [operationsPerTest] get operations took in ms
-*/
-
 class LinearBenchmark : BaseBenchmark {
 	init() {
 		super.init(benchmarkName: "LinearBenchmark", operationsPerTest: 1000)
