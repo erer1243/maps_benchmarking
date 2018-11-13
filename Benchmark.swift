@@ -34,7 +34,7 @@ class BinaryBenchmark : BaseBenchmark {
 
 	override func runSingleTest() {
 		var map = BinaryMap<String, String>()
-		let data = getRandomStringArray(size: 100, stringSize: 8)
+		let data = getRandomStringArray(size: 1000, stringSize: 8)
 
 		// Set test
 		startTimer()

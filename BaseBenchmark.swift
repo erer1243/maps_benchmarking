@@ -58,9 +58,9 @@ class BaseBenchmark {
 			Number tests run: \(numberTests)
 			Number gets performed: \(numberTests * getsPerTest)
 			Number sets performed: \(numberTests * setsPerTest)
-			Average times (per operation):
-				get: \(1000 * averageGetTestMillis / Double(getsPerTest)) µs
-				set: \(1000 * averageSetTestMillis / Double(setsPerTest)) µs
+			Average times (per test):
+				get: \(averageGetTestMillis) ms
+				set: \(averageSetTestMillis) ms
 		"""
 	}
 
