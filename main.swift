@@ -6,3 +6,6 @@ import Foundation
 
 var lb = LinearBenchmark()
 lb.runTests(count: 10)
+
+var bb = BinaryBenchmark()
+bb.runTests(count: 10)
