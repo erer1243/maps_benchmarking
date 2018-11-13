@@ -28,7 +28,8 @@ func getRandomStringArray(size: Int, stringSize: Int) -> [String] {
 
 class BaseBenchmark {
 	let benchmarkName: String,
-	    operationsPerTest: Int
+	    getsPerTest: Int,
+	    setsPerTest: Int
 
 	var startTimeMillis: Int64 = 0,
 	    endTimeMillis: Int64 = 0,
@@ -55,16 +56,18 @@ class BaseBenchmark {
 		return """
 		\(benchmarkName) test results:
 			Number tests run: \(numberTests)
-			Number operations performed: \(numberTests * operationsPerTest)
+			Number gets performed: \(numberTests * getsPerTest)
+			Number sets performed: \(numberTests * setsPerTest)
 			Average times (per operation):
-				get: \(1000 * averageGetTestMillis / Double(operationsPerTest)) µs
-				set: \(1000 * averageSetTestMillis / Double(operationsPerTest)) µs
+				get: \(1000 * averageGetTestMillis / Double(getsPerTest)) µs
+				set: \(1000 * averageSetTestMillis / Double(setsPerTest)) µs
 		"""
 	}
 
-	init(benchmarkName: String, operationsPerTest: Int) {
+	init(benchmarkName: String, getsPerTest: Int, setsPerTest: Int) {
 		self.benchmarkName = benchmarkName
-		self.operationsPerTest = operationsPerTest
+		self.getsPerTest = getsPerTest
+		self.setsPerTest = setsPerTest
 	}
 
 	func startTimer() {

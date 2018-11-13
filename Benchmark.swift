@@ -2,7 +2,7 @@ import Foundation
 
 class LinearBenchmark : BaseBenchmark {
 	init() {
-		super.init(benchmarkName: "LinearBenchmark", operationsPerTest: 1000)
+		super.init(benchmarkName: "LinearBenchmark", getsPerTest: 1000, setsPerTest: 1000)
 	}
 
 	override func runSingleTest() {
@@ -28,7 +28,14 @@ class LinearBenchmark : BaseBenchmark {
 }
 
 class BinaryBenchmark : BaseBenchmark {
+	init() {
+		super.init(benchmarkName: "BinaryBenchmark", getsPerTest: 1000, setsPerTest: 100)
+	}
+
 	override func runSingleTest() {
+		var map = BinaryMap<String, String>()
+		let data = getRandomStringArray(size: 1000, stringSize: 8)
+
 
 	}
 }
