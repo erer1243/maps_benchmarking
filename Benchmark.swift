@@ -9,7 +9,6 @@ class LinearBenchmark : BaseBenchmark {
 		var map = LinearMap<String, String>()
 		let data = getRandomStringArray(size: 1000, stringSize: 8)
 
-		// Set test
 		startTimer()
 		for s in data {
 			map[s] = s
@@ -17,7 +16,6 @@ class LinearBenchmark : BaseBenchmark {
 		stopTimer()
 		recordSet()
 
-		// Get test
 		startTimer()
 		for s in data {
 			_ = map[s]
@@ -34,9 +32,8 @@ class BinaryBenchmark : BaseBenchmark {
 
 	override func runSingleTest() {
 		var map = BinaryMap<String, String>()
-		let data = getRandomStringArray(size: 1000, stringSize: 8)
+		let data = getRandomStringArray(size: 100, stringSize: 8)
 
-		// Set test
 		startTimer()
 		for s in data {
 			map[s] = s
@@ -44,7 +41,6 @@ class BinaryBenchmark : BaseBenchmark {
 		stopTimer()
 		recordSet()
 
-		// Get test
 		startTimer()
 		for _ in 0..<10 {
 			for s in data {
@@ -57,7 +53,26 @@ class BinaryBenchmark : BaseBenchmark {
 }
 
 class HashBenchmark : BaseBenchmark {
-	override func runSingleTest() {
+	init() {
+		super.init(benchmarkName: "HashBenchmark", getsPerTest: 1000, setsPerTest: 1000)
+	}
 
+	override func runSingleTest() {
+		var map = HashMap<String, String>(size: 1000)
+		let data = getRandomStringArray(size: 1000, stringSize: 8)
+
+		startTimer()
+		for s in data {
+			map[s] = s
+		}
+		stopTimer()
+		recordSet()
+
+		startTimer()
+		for s in data {
+			_ = map[s]
+		}
+		stopTimer()
+		recordGet()
 	}
 }

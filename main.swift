@@ -5,7 +5,10 @@ import Foundation
 #endif
 
 var lb = LinearBenchmark()
-lb.runTests(count: 10)
+lb.runTests(count: 20)
 
 var bb = BinaryBenchmark()
-bb.runTests(count: 10)
+bb.runTests(count: 20)
+
+var hb = HashBenchmark()
+hb.runTests(count: 20)
