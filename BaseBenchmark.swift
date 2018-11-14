@@ -48,6 +48,16 @@ class BaseBenchmark {
 		return Double(setResults.reduce(0, +)) / Double(setResults.count)
 	}
 
+	var averageSetMicros: Double {
+		return setResults.map{ (1000 * Double($0)) / Double(setsPerTest) }
+			.reduce(0.0, +) / Double(setResults.count)
+	}
+
+	var averageGetMicros: Double {
+		return getResults.map{ (1000 * Double($0)) / Double(getsPerTest) }
+			.reduce(0.0, +) / Double(getResults.count)
+	}
+
 	var numberTests: Int {
 		return getResults.count
 	}
@@ -58,9 +68,10 @@ class BaseBenchmark {
 			Number tests run: \(numberTests)
 			Number gets performed: \(numberTests * getsPerTest)
 			Number sets performed: \(numberTests * setsPerTest)
-			Average times (per test):
-				get: \(averageGetTestMillis) ms
-				set: \(averageSetTestMillis) ms
+			Average times per operation:
+				get: \(averageGetMicros) microseconds
+				set: \(averageSetMicros) microseconds
+
 		"""
 	}
 
