@@ -28,8 +28,7 @@ func getRandomStringArray(size: Int, stringSize: Int) -> [String] {
 
 class BaseBenchmark {
 	let benchmarkName: String,
-	    getsPerTest: Int,
-	    setsPerTest: Int
+	    operationsPerTest: Int
 
 	var startTimeMillis: Int64 = 0,
 	    endTimeMillis: Int64 = 0,
@@ -49,12 +48,12 @@ class BaseBenchmark {
 	}
 
 	var averageSetMicros: Double {
-		return setResults.map{ (1000 * Double($0)) / Double(setsPerTest) }
+		return setResults.map{ (1000 * Double($0)) / Double(operationsPerTest) }
 			.reduce(0.0, +) / Double(setResults.count)
 	}
 
 	var averageGetMicros: Double {
-		return getResults.map{ (1000 * Double($0)) / Double(getsPerTest) }
+		return getResults.map{ (1000 * Double($0)) / Double(operationsPerTest) }
 			.reduce(0.0, +) / Double(getResults.count)
 	}
 
@@ -65,20 +64,16 @@ class BaseBenchmark {
 	var resultString: String {
 		return """
 		\(benchmarkName) test results:
-			Number tests run: \(numberTests)
-			Number gets performed: \(numberTests * getsPerTest)
-			Number sets performed: \(numberTests * setsPerTest)
+			Number tests run: \(numberTests) (operations per test: \(operationsPerTest))
 			Average times per operation:
-				get: \(averageGetMicros) microseconds
-				set: \(averageSetMicros) microseconds
-
+				get: \(averageGetMicros) μs
+				set: \(averageSetMicros) μs
 		"""
 	}
 
-	init(benchmarkName: String, getsPerTest: Int, setsPerTest: Int) {
+	init(benchmarkName: String, operationsPerTest: Int = 1000) {
 		self.benchmarkName = benchmarkName
-		self.getsPerTest = getsPerTest
-		self.setsPerTest = setsPerTest
+		self.operationsPerTest = operationsPerTest
 	}
 
 	func startTimer() {

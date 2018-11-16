@@ -4,11 +4,16 @@ import Foundation
 	srandom(UInt32(time(nil)))
 #endif
 
-var lb = LinearBenchmark()
-lb.runTests(count: 20)
+let testCount = 10
 
-var bb = BinaryBenchmark()
-bb.runTests(count: 20)
+EmptyLinearBenchmark().runTests(count: testCount)
+PreFilledLinearBenchmark().runTests(count: testCount)
+print("###############\n")
 
-var hb = HashBenchmark()
-hb.runTests(count: 20)
+PreFilledBinaryBenchmark().runTests(count: testCount)
+EmptyBinaryBenchmark().runTests(count: testCount)
+print("###############\n")
+
+LargeArrayHashBenchmark().runTests(count: testCount)
+SmallArrayHashBenchmark().runTests(count: testCount)
+print("###############\n")
