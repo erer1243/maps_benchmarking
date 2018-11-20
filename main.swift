@@ -4,16 +4,17 @@ import Foundation
 	srandom(UInt32(time(nil)))
 #endif
 
-let testCount = 10
+let testCount = 3
+let sizes = [500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000]
 
-EmptyLinearBenchmark().runTests(count: testCount)
-PreFilledLinearBenchmark().runTests(count: testCount)
+EmptyLinearBenchmark().runTests(count: testCount, dataSizes: sizes)
+PreFilledLinearBenchmark().runTests(count: testCount, dataSizes: sizes)
 print("###############\n")
 
-PreFilledBinaryBenchmark().runTests(count: testCount)
-EmptyBinaryBenchmark().runTests(count: testCount)
+PreFilledBinaryBenchmark().runTests(count: testCount, dataSizes: sizes)
+EmptyBinaryBenchmark().runTests(count: testCount, dataSizes: sizes)
 print("###############\n")
 
-LargeArrayHashBenchmark().runTests(count: testCount)
-SmallArrayHashBenchmark().runTests(count: testCount)
+LargeArrayHashBenchmark().runTests(count: testCount, dataSizes: sizes)
+SmallArrayHashBenchmark().runTests(count: testCount, dataSizes: sizes)
 print("###############\n")

@@ -4,6 +4,7 @@ func getCurrentMillis() -> Int64 {
 	return Int64(NSDate().timeIntervalSince1970 * 1000)
 }
 
+// Preprocessor trick from the internet
 func getRandomInt(range: Int) -> Int {
 	#if os(macOS)
 		return Int(arc4random_uniform(UInt32(range)))
@@ -32,43 +33,23 @@ class BaseBenchmark {
 
 	var startTimeMillis: Int64 = 0,
 	    endTimeMillis: Int64 = 0,
-	    getResults: [Int] = [],
-	    setResults: [Int] = []
+	    results = Dictionary<Int, Array<(Int, Int)>>()
 
 	var elapsedMillis: Int {
 		return Int(endTimeMillis - startTimeMillis)
 	}
 
-	var averageGetTestMillis: Double {
-		return Double(getResults.reduce(0, +)) / Double(getResults.count)
-	}
+	func averageMicrosFromMillis(dataSize: Int, data: [(getTime: Int, setTime: Int)]) -> (Double, Double) {
+		let getTimes = data.map{ $0.getTime }, // Extract get times
+		    setTimes = data.map{ $0.setTime } // Extract set times
 
-	var averageSetTestMillis: Double {
-		return Double(setResults.reduce(0, +)) / Double(setResults.count)
-	}
+		let averageGetMicros = getTimes.map{ (1000 * Double($0)) / Double(dataSize) } // Compute average per test
+			.reduce(0.0, +) / Double(data.count) // Compute average of all tests
 
-	var averageSetMicros: Double {
-		return setResults.map{ (1000 * Double($0)) / Double(operationsPerTest) }
-			.reduce(0.0, +) / Double(setResults.count)
-	}
+		let averageSetMicros = setTimes.map{ (1000 * Double($0)) / Double(dataSize) } // Compute average per test
+			.reduce(0.0, +) / Double(data.count) // Compute average of all tests
 
-	var averageGetMicros: Double {
-		return getResults.map{ (1000 * Double($0)) / Double(operationsPerTest) }
-			.reduce(0.0, +) / Double(getResults.count)
-	}
-
-	var numberTests: Int {
-		return getResults.count
-	}
-
-	var resultString: String {
-		return """
-		\(benchmarkName) test results:
-			Number tests run: \(numberTests) (operations per test: \(operationsPerTest))
-			Average times per operation:
-				get: \(averageGetMicros) μs
-				set: \(averageSetMicros) μs
-		"""
+		return (getMicros: averageGetMicros, setMicros: averageSetMicros)
 	}
 
 	init(benchmarkName: String, operationsPerTest: Int = 1000) {
@@ -84,23 +65,33 @@ class BaseBenchmark {
 		endTimeMillis = getCurrentMillis()
 	}
 
-	func recordSet() {
-		setResults.append(elapsedMillis)
-	}
-
-	func recordGet() {
-		getResults.append(elapsedMillis)
-	}
-
-	func runTests(count: Int) {
-		for _ in 0..<count {
-			runSingleTest()
+	func runTests(count: Int, dataSizes: [Int]) {
+		print("Running \(benchmarkName)")
+		for size in dataSizes {
+			results[size] = []
+			for _ in 0..<count {
+				results[size]!.append(runSingleTest(data: getRandomStringArray(size: size, stringSize: 8)))
+			}
 		}
 
-		print(resultString)
+		printResults()
+	}
+
+	func printResults() {
+		let sortedResults = results.sorted(by: { $0.key < $1.key })
+
+		print("\(benchmarkName) test results:")
+		for res in sortedResults {
+			let micros: (getMicros: Double, setMicros: Double) = averageMicrosFromMillis(dataSize: res.key, data: res.value)
+			print("""
+				dataSize \(res.key)
+					get micros \(micros.getMicros)
+					set micros \(micros.setMicros)
+			""")
+		}
 	}
 
 	/* It's up to runSingleTest to manage the timer, generate test data,
-	enter results, etc. */
-	/* virtual */ func runSingleTest() {}
+	return results, etc. */
+	/* virtual */ func runSingleTest(data: [String]) -> (Int, Int) { return (-1, -1) }
 }

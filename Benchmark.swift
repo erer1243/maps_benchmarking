@@ -8,9 +8,8 @@ class EmptyLinearBenchmark : BaseBenchmark {
 		super.init(benchmarkName: "Empty LinearMap benchmark")
 	}
 
-	override func runSingleTest() {
+	override func runSingleTest(data: [String]) -> (Int, Int) {
 		var map = LinearMap<String, String>()
-		let data = getRandomStringArray(size: 1000, stringSize: 8)
 
 		// Insert new data
 		startTimer()
@@ -18,14 +17,16 @@ class EmptyLinearBenchmark : BaseBenchmark {
 			map[s] = s
 		}
 		stopTimer()
-		recordSet()
+		let setTime = elapsedMillis
 
 		startTimer()
 		for s in data {
 			_ = map[s]
 		}
 		stopTimer()
-		recordGet()
+		let getTime = elapsedMillis
+
+		return (getTime: getTime, setTime: setTime)
 	}
 }
 
@@ -34,9 +35,8 @@ class PreFilledLinearBenchmark : BaseBenchmark {
 		super.init(benchmarkName: "Prefilled LinearMap benchmark")
 	}
 
-	override func runSingleTest() {
+	override func runSingleTest(data: [String]) -> (Int, Int) {
 		var map = LinearMap<String, String>()
-		let data = getRandomStringArray(size: 1000, stringSize: 8)
 
 		// Prefill map with data
 		for s in data {
@@ -48,14 +48,16 @@ class PreFilledLinearBenchmark : BaseBenchmark {
 			map[s] = s
 		}
 		stopTimer()
-		recordSet()
+		let setTime = elapsedMillis
 
 		startTimer()
 		for s in data {
 			_ = map[s]
 		}
 		stopTimer()
-		recordGet()
+		let getTime = elapsedMillis
+
+		return (getTime: getTime, setTime: setTime)
 	}
 }
 
@@ -71,9 +73,8 @@ class PreFilledBinaryBenchmark : BaseBenchmark {
 		super.init(benchmarkName: "Pre filled BinaryMap benchmark (best case)")
 	}
 
-	override func runSingleTest() {
+	override func runSingleTest(data: [String]) -> (Int, Int) {
 		var map = BinaryMap<String, String>()
-		let data = getRandomStringArray(size: 1000, stringSize: 8)
 
 		// Prefill map with data so insert isn't happening
 		for s in data {
@@ -85,14 +86,16 @@ class PreFilledBinaryBenchmark : BaseBenchmark {
 			map[s] = s
 		}
 		stopTimer()
-		recordSet()
+		let setTime = elapsedMillis
 
 		startTimer()
 		for s in data {
 			_ = map[s]
 		}
 		stopTimer()
-		recordGet()
+		let getTime = elapsedMillis
+
+		return (getTime: getTime, setTime: setTime)
 	}
 }
 
@@ -105,9 +108,8 @@ class EmptyBinaryBenchmark : BaseBenchmark {
 		super.init(benchmarkName: "Empty BinaryMap benchmark (worst case)")
 	}
 
-	override func runSingleTest() {
+	override func runSingleTest(data: [String]) -> (Int, Int) {
 		var map = BinaryMap<String, String>()
-		let data = getRandomStringArray(size: 1000, stringSize: 8)
 
 		// Insert lots of new data
 		startTimer()
@@ -115,7 +117,7 @@ class EmptyBinaryBenchmark : BaseBenchmark {
 			map[s] = s
 		}
 		stopTimer()
-		recordSet()
+		let setTime = elapsedMillis
 
 		// Run get again to prove it doesn't change
 		startTimer()
@@ -123,7 +125,9 @@ class EmptyBinaryBenchmark : BaseBenchmark {
 			_ = map[s]
 		}
 		stopTimer()
-		recordGet()
+		let getTime = elapsedMillis
+
+		return (getTime: getTime, setTime: setTime)
 	}
 }
 
@@ -135,24 +139,25 @@ class LargeArrayHashBenchmark : BaseBenchmark {
 		super.init(benchmarkName: "Large internal array HashMap benchmark (best case)")
 	}
 
-	override func runSingleTest() {
-		// Internal array size 1.5 x as large as data set
-		var map = HashMap<String, String>(size: 1500)
-		let data = getRandomStringArray(size: 1000, stringSize: 8)
+	override func runSingleTest(data: [String]) -> (Int, Int) {
+		// Internal array size 2x as large as data set
+		var map = HashMap<String, String>(size: data.count * 2)
 
 		startTimer()
 		for s in data {
 			map[s] = s
 		}
 		stopTimer()
-		recordSet()
+		let setTime = elapsedMillis
 
 		startTimer()
 		for s in data {
 			_ = map[s]
 		}
 		stopTimer()
-		recordGet()
+		let getTime = elapsedMillis
+
+		return (getTime: getTime, setTime: setTime)
 	}
 }
 
@@ -164,23 +169,24 @@ class SmallArrayHashBenchmark : BaseBenchmark {
 		super.init(benchmarkName: "Small internal array HashMap benchmark (worst case)")
 	}
 
-	override func runSingleTest() {
+	override func runSingleTest(data: [String]) -> (Int, Int) {
 		// Internal array 0.5 x as large as data set
-		var map = HashMap<String, String>(size: 500)
-		let data = getRandomStringArray(size: 1000, stringSize: 8)
+		var map = HashMap<String, String>(size: Int(data.count/2))
 
 		startTimer()
 		for s in data {
 			map[s] = s
 		}
 		stopTimer()
-		recordSet()
+		let setTime = elapsedMillis
 
 		startTimer()
 		for s in data {
 			_ = map[s]
 		}
 		stopTimer()
-		recordGet()
+		let getTime = elapsedMillis
+
+		return (getTime: getTime, setTime: setTime)
 	}
 }
