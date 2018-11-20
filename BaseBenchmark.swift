@@ -49,7 +49,7 @@ class BaseBenchmark {
 		let averageSetMicros = setTimes.map{ (1000 * Double($0)) / Double(dataSize) } // Compute average per test
 			.reduce(0.0, +) / Double(data.count) // Compute average of all tests
 
-		return (getMicros: averageGetMicros, setMicros: averageSetMicros)
+		return (averageGetMicros, averageSetMicros)
 	}
 
 	init(benchmarkName: String, operationsPerTest: Int = 1000) {
@@ -78,6 +78,7 @@ class BaseBenchmark {
 	}
 
 	func printResults() {
+		// Print data in order of test data size
 		let sortedResults = results.sorted(by: { $0.key < $1.key })
 
 		print("\(benchmarkName) test results:")
@@ -91,7 +92,5 @@ class BaseBenchmark {
 		}
 	}
 
-	/* It's up to runSingleTest to manage the timer, generate test data,
-	return results, etc. */
 	/* virtual */ func runSingleTest(data: [String]) -> (Int, Int) { return (-1, -1) }
 }
